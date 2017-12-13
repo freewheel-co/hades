@@ -11,11 +11,13 @@ Krb5Wrap::Krb5Wrap(){
 }
 
 Krb5Wrap::~Krb5Wrap(){
-  delete this->k;
+  if (k) {
+    delete k;
+  } 
 }
 
 Krb5* Krb5Wrap::Unwrap(){
-  return this->k;
+  return k;
 }
 
 //A 'non' setter. V8 cannot bind getter without setter. We use this empty setter to avoid data modification

@@ -1,7 +1,7 @@
 {
-  "name": "krb5",
-  "version": "0.2.0",
-  "description": "Kerberos library for Node.js, with Spnego Wrapping",
+  "name": "hades",
+  "version": "0.2.1",
+  "description": "Kerberos library for Node.js forked to fix some C++ issues",
   "main": "./lib/index.js",
   "license": "BSD-3-Clause",
   "keywords": [
