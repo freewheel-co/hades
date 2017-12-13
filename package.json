@@ -3,7 +3,7 @@
   "version": "0.2.1",
   "description": "Kerberos library for Node.js forked to fix some C++ issues",
   "main": "./lib/index.js",
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "keywords": [
     "kerberos",
     "security",
@@ -24,6 +24,6 @@
     "install": "node-gyp rebuild"
   },
   "author": {
-    "name": "Pierre Sauvage"
+    "name": "Jon Marshall"
   }
 }
