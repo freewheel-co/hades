@@ -1,5 +1,5 @@
 {
-  "name": "hades",
+  "name": "hades-krb5",
   "version": "0.2.1",
   "description": "Kerberos library for Node.js forked to fix some C++ issues",
   "main": "./lib/index.js",
