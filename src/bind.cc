@@ -18,7 +18,7 @@ Krb5Wrap::~Krb5Wrap(){
 }
 
 Krb5* Krb5Wrap::Unwrap(){
-  if (!k) return;
+  if (!k) return nullptr;
   return k;
 }
 

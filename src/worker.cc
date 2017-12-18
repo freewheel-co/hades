@@ -12,7 +12,7 @@ Worker::Worker(Krb5* nkrb, Nan::Callback* cb, char** args, int args_length, void
 Worker* Worker::Create(const Nan::FunctionCallbackInfo<v8::Value>& info, void (*func)(Krb5*, const char* const*, int), bool ret) {
   int length = info.Length()-1;
   Krb5* k = ((Krb5Wrap*)Nan::ObjectWrap::Unwrap<Krb5Wrap>(info.This()))->Unwrap();
-  if (!k) return;
+  if (!k) return nullptr;
   Nan::Callback* callback = new Nan::Callback(info[length].As<v8::Function>());
   char** args = (length>0)?new char*[length]:NULL;
   int i;
