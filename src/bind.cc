@@ -7,6 +7,7 @@ Nan::Persistent<v8::Function> constructor;
 
 Krb5Wrap::Krb5Wrap(){
   this->k = new Krb5();
+  if (!k) return;
   this->k->init_custom_error(INVALID_PARAMETER,INVALID_PARAMETER_MSG);
 }
 
@@ -17,6 +18,7 @@ Krb5Wrap::~Krb5Wrap(){
 }
 
 Krb5* Krb5Wrap::Unwrap(){
+  if (!k) return;
   return k;
 }
 
@@ -60,6 +62,7 @@ void Krb5Wrap::New(const Nan::FunctionCallbackInfo<v8::Value>& info) {
   if (info.IsConstructCall()) {
     // Invoked as constructor: `new MyObject(...)`
     krb = new Krb5Wrap();
+    if (!krb) return;
     krb->Wrap(info.This());
     info.GetReturnValue().Set(info.This());
   }
@@ -76,6 +79,7 @@ void Krb5Wrap::New(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 /** Async WRAP **/
 
 void GenTokenAsync(Krb5* k, const char* const* args, int length){
+  if (!k) return;
   if(length>=1){
     k->generate_spnego_token(args[0]);
   }
@@ -85,6 +89,7 @@ void GenTokenAsync(Krb5* k, const char* const* args, int length){
 }
 
 void InitAsync(Krb5* k, const char* const* args, int length){
+  if (!k) return;
   if(length>=2){
     k->init(args[0],args[1]);
   }
@@ -94,6 +99,7 @@ void InitAsync(Krb5* k, const char* const* args, int length){
 }
 
 void ByPasswordAsync(Krb5* k, const char* const* args, int length){
+  if (!k) return;
   if(length>=1){
     k->get_credentials_by_password(args[0]);
   }
@@ -103,6 +109,7 @@ void ByPasswordAsync(Krb5* k, const char* const* args, int length){
 }
 
 void ByKeytabAsync(Krb5* k, const char* const* args, int length){
+  if (!k) return;
   if(length>=1){
     k->get_credentials_by_keytab(args[0]);
   }
@@ -112,6 +119,7 @@ void ByKeytabAsync(Krb5* k, const char* const* args, int length){
 }
 
 void DestroyAsync(Krb5* k, const char* const* args, int length){
+  if (!k) return;
   if(length>=1){
     k->destroy(args[0]);
   }
@@ -144,6 +152,7 @@ void Krb5Wrap::Destroy(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 
 void Krb5Wrap::InitSync(const Nan::FunctionCallbackInfo<v8::Value>& info) {
   Krb5* k = ((Krb5Wrap*)Nan::ObjectWrap::Unwrap<Krb5Wrap>(info.This()))->Unwrap();
+  if (!k) return;
   if(info.Length()>=1){
     v8::String::Utf8Value v8user(info[0]);
     v8::String::Utf8Value v8realm(info[1]);
@@ -154,6 +163,7 @@ void Krb5Wrap::InitSync(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 void Krb5Wrap::ByPasswordSync(const Nan::FunctionCallbackInfo<v8::Value>& info) {
   // Extract C++ object reference from "this"
   Krb5* k = ((Krb5Wrap*)Nan::ObjectWrap::Unwrap<Krb5Wrap>(info.This()))->Unwrap();
+  if (!k) return;
   if(info.Length()>=1){
     v8::String::Utf8Value v8pass(info[0]);
     k->get_credentials_by_password(*v8pass);
@@ -170,6 +180,7 @@ void Krb5Wrap::ByPasswordSync(const Nan::FunctionCallbackInfo<v8::Value>& info) 
 void Krb5Wrap::ByKeyTabSync(const Nan::FunctionCallbackInfo<v8::Value>& info) {
   // Extract C++ object reference from "this"
   Krb5* k = ((Krb5Wrap*)Nan::ObjectWrap::Unwrap<Krb5Wrap>(info.This()))->Unwrap();
+  if (!k) return;
   if(info.Length()>=1){
     v8::String::Utf8Value v8kt(info[0]);
     k->get_credentials_by_keytab(*v8kt);
@@ -185,6 +196,7 @@ void Krb5Wrap::ByKeyTabSync(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 void Krb5Wrap::GenTokenSync(const Nan::FunctionCallbackInfo<v8::Value>& info) {
   // Extract C++ object reference from "this"
   Krb5* k = ((Krb5Wrap*)Nan::ObjectWrap::Unwrap<Krb5Wrap>(info.This()))->Unwrap();
+  if (!k) return;
   if(info.Length()==1){
     v8::String::Utf8Value v8server_name(info[0]);
     k->generate_spnego_token(*v8server_name);
@@ -204,12 +216,15 @@ void Krb5Wrap::GenTokenSync(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 void Krb5Wrap::DestroySync(const Nan::FunctionCallbackInfo<v8::Value>& info) {
   // Extract C++ object reference from "this"
   Krb5* k = ((Krb5Wrap*)Nan::ObjectWrap::Unwrap<Krb5Wrap>(info.This()))->Unwrap();
+
+  if (!k) return;
+
   if(info.Length()==1){
     v8::String::Utf8Value v8cache_name(info[0]);
     k->destroy(*v8cache_name);
   }
   else{
-    k->destroy();
+      k->destroy();
   }
   if(k->err){
     Nan::ThrowError(k->get_error_message());
